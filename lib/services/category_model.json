@@ -1,0 +1,27 @@
+{
+    "categories": [
+        {
+            "name": "Sweet",
+            "subCategories": [
+                "Desserts",
+                "Baked Goods",
+                "Sweet Breakfast Items",
+                "Fruit-based Sweets"
+            ]
+        },
+        {
+            "name": "Savory",
+            "subCategories": [
+                "Pizzas",
+                "Burgers",
+                "Sandwiches",
+                "Salads",
+                "Tacos"
+            ]
+        },
+        {
+            "name": "Drinks",
+            "subCategories": ["Soft drinks", "Milkshakes", "Juices"]
+        }
+    ]
+}
