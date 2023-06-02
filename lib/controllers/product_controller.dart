@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foody/consts/consts.dart';
 import 'package:foody/models/category_model.dart';
 import 'package:get/get.dart';
 
@@ -34,5 +35,23 @@ class ProductController extends GetxController {
 
   calculateTotalPrice(price) {
     totalPrice.value = price * quantity.value;
+  }
+
+  addToCart({title, img, quantity, price, context}) async {
+    await firestore.collection(cartCollection).doc().set({
+      'title': title,
+      'img': img,
+      'quantity': quantity,
+      'price': price,
+      'added_by': currentUser!.uid,
+    }).catchError((error) {
+      VxToast.show(context, msg: error.toString());
+    });
+  }
+
+  resetvalues() {
+    totalPrice.value = 0;
+    quantity.value = 0;
+    
   }
 }
