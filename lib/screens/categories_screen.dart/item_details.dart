@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
+import 'package:foody/controllers/product_controller.dart';
 import 'package:foody/widgets/app_button.dart';
+import 'package:get/get.dart';
 
-class ItemDetails extends StatefulWidget {
+class ItemDetails extends StatelessWidget {
   final String? title;
+  final dynamic data;
 
-  const ItemDetails({super.key, required this.title});
+  const ItemDetails({super.key, required this.title, required this.data});
 
-  @override
-  State<ItemDetails> createState() => _ItemDetailsState();
-}
-
-class _ItemDetailsState extends State<ItemDetails> {
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<ProductController>();
 
     return Scaffold(
       backgroundColor: lightGrey,
       appBar: AppBar(
-        title: widget.title!.text.color(darkFontGrey).fontFamily(bold).make(),
+        backgroundColor: redColor,
+        title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
         actions: [
           IconButton(
             onPressed: () {},
@@ -47,35 +47,43 @@ class _ItemDetailsState extends State<ItemDetails> {
                       autoPlay: true,
                       height: 350,
                       aspectRatio: 16 / 9,
-                      itemCount: 3,
+                      viewportFraction: 1.0,
+                      itemCount: data['p_images'].length,
                       itemBuilder: (context, index) {
-                        return Image.asset(
-                          imgS1,
+                        return Image.network(
+                          data['p_images'][index],
                           width: double.infinity,
                           fit: BoxFit.cover,
                         );
                       }),
                   10.heightBox,
-                  widget.title!.text
+                  title!.text
                       .size(16)
                       .color(darkFontGrey)
                       .fontFamily(semibold)
                       .make(),
                   10.heightBox,
                   VxRating(
+                    isSelectable: false,
+                    value: double.parse(data['p_rating']),
                     onRatingUpdate: (value) {},
                     normalColor: textfieldGrey,
                     selectionColor: golden,
                     count: 5,
                     size: 25,
-                    stepInt: true,
+                    maxRating: 5,
                   ),
                   10.heightBox,
-                  "\$30".text.color(redColor).fontFamily(bold).size(18).make(),
+                  "${data['p_price']} TND"
+                      .text
+                      .color(redColor)
+                      .fontFamily(bold)
+                      .size(18)
+                      .make(),
                   10.heightBox,
                   Column(
                     children: [
-                      Row(
+                      /* Row(
                         children: [
                           SizedBox(
                             width: 100,
@@ -90,47 +98,68 @@ class _ItemDetailsState extends State<ItemDetails> {
                           const Spacer(),
                           //supplements here
                         ],
-                      ),
+                      ),*/
                       Row(
                         children: [
                           SizedBox(
                             width: 100,
                             child: "Quantity: ".text.color(darkFontGrey).make(),
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.remove),
-                              ),
-                              "0"
-                                  .text
-                                  .size(16)
-                                  .color(darkFontGrey)
-                                  .fontFamily(bold)
-                                  .make(),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.add),
-                              ),
-                            ],
+                          Obx(
+                            () => Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    controller.decreaseQuantity();
+                                    controller.calculateTotalPrice(
+                                        double.parse(data['p_price']));
+                                  },
+                                  icon: const Icon(Icons.remove),
+                                ),
+                                Text(
+                                  controller.quantity.value.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: darkFontGrey,
+                                    fontFamily: 'bold',
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    controller.increaseQuantity(
+                                        int.parse(data['p_quantity']));
+
+                                    controller.calculateTotalPrice(
+                                        double.parse(data['p_price']));
+                                  },
+                                  icon: const Icon(Icons.add),
+                                ),
+                                10.heightBox,
+                                "${data['p_quantity']} available"
+                                    .text
+                                    .color(textfieldGrey)
+                                    .make(),
+                              ],
+                            ),
                           ),
                           10.heightBox,
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                child:
-                                    "Total: ".text.color(darkFontGrey).make(),
-                              ),
-                              "\$0.00"
-                                  .text
-                                  .color(redColor)
-                                  .size(16)
-                                  .fontFamily(bold)
-                                  .make(),
-                            ],
-                          ).box.padding(const EdgeInsets.all(8)).make(),
+                          Obx(
+                            () => Row(
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                  child:
+                                      "Total: ".text.color(darkFontGrey).make(),
+                                ),
+                                "${controller.totalPrice.value} Tnd"
+                                    .text
+                                    .color(redColor)
+                                    .size(16)
+                                    .fontFamily(bold)
+                                    .make(),
+                              ],
+                            ).box.padding(const EdgeInsets.all(8)).make(),
+                          ),
                         ],
                       ).box.white.shadowSm.make(),
                     ],

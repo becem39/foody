@@ -75,19 +75,24 @@ class CategoryDetails extends StatelessWidget {
                             crossAxisSpacing: 8,
                           ),
                           itemBuilder: (context, index) {
-                          
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
                                   data[index]['p_images'][0],
-                            
                                   width: 200,
-                                  height: 200,
+                                  height: 150,
                                   fit: BoxFit.cover,
                                 ),
-                                const Spacer(),
-                                "Price \$20"
+                                10.heightBox,
+                                "${data[index]['p_name']}"
+                                    .text
+                                    .color(redColor)
+                                    .fontFamily(bold)
+                                    .size(16)
+                                    .make(),
+                                10.heightBox,
+                                "${data[index]['p_price']} TND"
                                     .text
                                     .color(redColor)
                                     .fontFamily(bold)
@@ -104,8 +109,9 @@ class CategoryDetails extends StatelessWidget {
                                 .padding(const EdgeInsets.all(12))
                                 .make()
                                 .onTap(() {
-                              Get.to(() => const ItemDetails(
-                                    title: 'title here',
+                              Get.to(() => ItemDetails(
+                                    title: "${data[index]['p_name']}",
+                                    data: data[index],
                                   ));
                             });
                           }),
