@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/controllers/cart_controller.dart';
+import 'package:foody/screens/cart_screen/shipping_screen.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/app_button.dart';
 import 'package:foody/widgets/loading_indicator.dart';
@@ -15,6 +16,12 @@ class CartScreen extends StatelessWidget {
     var controller = Get.put(CartController());
     return Scaffold(
         backgroundColor: whiteColor,
+        bottomNavigationBar: SizedBox(
+          height: 60,
+          child: appButton(() {
+            Get.to(() => const ShippingDetails());
+          }, redColor, whiteColor, "Confirm order"),
+        ),
         appBar: AppBar(
           backgroundColor: redColor,
           automaticallyImplyLeading: false,
@@ -35,6 +42,7 @@ class CartScreen extends StatelessWidget {
               } else {
                 var data = snapshot.data!.docs;
                 controller.calculate(data);
+                controller.productSnapshot = data;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -83,12 +91,6 @@ class CartScreen extends StatelessWidget {
                               fontFamily: 'bold',
                             ),
                           ),
-
-                          /*'${controller.totalPrice.toString()} TND'
-                                .text
-                                .color(redColor)
-                                .fontFamily(semibold)
-                                .make(),*/
                         ],
                       )
                           .box
@@ -98,11 +100,11 @@ class CartScreen extends StatelessWidget {
                           .roundedSM
                           .make(),
                       10.heightBox,
-                      SizedBox(
+                      /*   SizedBox(
                         width: context.screenWidth - 50,
                         child: appButton(
                             () {}, redColor, whiteColor, "Confirm order"),
-                      )
+                      )*/
                     ],
                   ),
                 );

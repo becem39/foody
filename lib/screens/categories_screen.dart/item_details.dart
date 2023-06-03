@@ -23,24 +23,36 @@ class ItemDetails extends StatelessWidget {
         backgroundColor: lightGrey,
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
-                controller.resetvalues();
-                Get.back();
-              },
-              icon: const Icon(Icons.arrow_back)),
-          backgroundColor: redColor,
+            onPressed: () {
+              controller.resetvalues();
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back),
+            color: darkFontGrey,
+          ),
+          backgroundColor: whiteColor,
           title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
           actions: [
             IconButton(
               onPressed: () {},
               icon: const Icon(
                 Icons.share,
+                color: darkFontGrey,
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_outlined,
+            Obx(
+              () => IconButton(
+                onPressed: () {
+                  if (controller.isFav.value) {
+                    controller.removeFromWishlist(data.id,context);
+                  } else {
+                    controller.addToWishlist(data.id,context);
+                  }
+                },
+                icon: Icon(
+                  Icons.favorite_outlined,
+                  color: controller.isFav.value ? redColor : darkFontGrey,
+                ),
               ),
             ),
           ],
