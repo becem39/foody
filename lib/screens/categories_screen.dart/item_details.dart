@@ -44,9 +44,9 @@ class ItemDetails extends StatelessWidget {
               () => IconButton(
                 onPressed: () {
                   if (controller.isFav.value) {
-                    controller.removeFromWishlist(data.id,context);
+                    controller.removeFromWishlist(data.id, context);
                   } else {
-                    controller.addToWishlist(data.id,context);
+                    controller.addToWishlist(data.id, context);
                   }
                 },
                 icon: Icon(
@@ -199,14 +199,18 @@ class ItemDetails extends StatelessWidget {
               width: double.infinity,
               height: 60,
               child: appButton(() {
-                controller.addToCart(
-                  context: context,
-                  quantity: controller.quantity.value,
-                  img: data['p_images'][0],
-                  title: data['p_name'],
-                  price: controller.totalPrice.value,
-                );
-                VxToast.show(context, msg: "Added to cart");
+                if (controller.quantity.value > 0) {
+                  controller.addToCart(
+                    context: context,
+                    quantity: controller.quantity.value,
+                    img: data['p_images'][0],
+                    title: data['p_name'],
+                    price: controller.totalPrice.value,
+                  );
+                  VxToast.show(context, msg: "Added to cart");
+                } else {
+                  VxToast.show(context, msg: "Minimum 1 product");
+                }
               }, redColor, whiteColor, "Add to cart"),
             ),
           ],

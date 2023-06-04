@@ -7,11 +7,14 @@ import 'package:foody/consts/lists.dart';
 import 'package:foody/controllers/auth_controllert.dart';
 import 'package:foody/controllers/profile_controller.dart';
 import 'package:foody/screens/auth/login_screen.dart';
+import 'package:foody/screens/orders_screen/orders_screen.dart';
 import 'package:foody/screens/profile_screen/components/detail_card.dart';
 import 'package:foody/screens/profile_screen/edit_profile_screen.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/bg_widget.dart';
 import 'package:get/get.dart';
+
+import '../wishlist_screen/wishlist_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -145,6 +148,16 @@ class ProfileScreen extends StatelessWidget {
                                       .fontFamily(semibold)
                                       .color(darkFontGrey)
                                       .make(),
+                                  onTap: () {
+                                    switch (index) {
+                                      case 0:
+                                        Get.to(() => const OrdersScreen());
+                                        break;
+                                      case 1:
+                                        Get.to(() => const WishlistScreen());
+                                        break;
+                                    }
+                                  },
                                 );
                               },
                               separatorBuilder: ((context, index) {

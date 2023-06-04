@@ -11,4 +11,4 @@ User? currentUser = auth.currentUser;
 const userCollection = "users";
 const productsCollection = "products";
 const cartCollection = 'cart';
-const ordersCollection = 'order';
+const ordersCollection = 'orders';

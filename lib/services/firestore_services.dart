@@ -27,4 +27,11 @@ class FirestoreServices {
   static deleteDocument(docId) {
     return firestore.collection(cartCollection).doc(docId).delete();
   }
+
+  static getAllOrders() {
+    return firestore
+        .collection(ordersCollection)
+        .where('order_by', isEqualTo: currentUser!.uid)
+        .snapshots();
+  }
 }
