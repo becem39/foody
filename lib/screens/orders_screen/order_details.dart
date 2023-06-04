@@ -14,6 +14,7 @@ class OrdersDetails extends StatelessWidget {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
+        backgroundColor: redColor,
         title: "Order details".text.fontFamily(semibold).make(),
       ),
       body: Padding(
@@ -43,11 +44,11 @@ class OrdersDetails extends StatelessWidget {
                 children: [
                   orderPlaceDetails(
                       data1: data['order_code'], title1: 'order code'),
-                  /*  orderPlaceDetails(
+                  orderPlaceDetails(
                       title1: "Order date ",
                       data1: intl.DateFormat()
                           .add_yMd()
-                          .format((data['order_date'].toDate()))),*/
+                          .format((data['order_date'].toDate()))),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8),
@@ -56,14 +57,15 @@ class OrdersDetails extends StatelessWidget {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            "Shipping Adress".text.fontFamily(semibold).make(),
-                            "${data['order_by_name']}".text.make(),
-                            "${data['order_by_email']}".text.make(),
-                            "${data['order_by_address']}".text.make(),
-                            "${data['order_by_state']}".text.make(),
-                            "${data['order_by_city']}".text.make(),
-                            "${data['order_by_phone']}".text.make(),
+                            "Shipping ".text.fontFamily(semibold).make(),
+                            "User : ${data['order_by_name']}".text.make(),
+                            "email : ${data['order_by_email']}".text.make(),
+                            "address : ${data['order_by_address']}".text.make(),
+                            "state : ${data['order_by_state']}".text.make(),
+                            "city : ${data['order_by_city']}".text.make(),
+                            "phone : ${data['order_by_phone']}".text.make(),
                           ],
                         ),
                         SizedBox(
@@ -73,7 +75,7 @@ class OrdersDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               "Total Amount".text.fontFamily(semibold).make(),
-                              "${data['total_amount']}"
+                              "${data['total_amount']} TND"
                                   .text
                                   .color(redColor)
                                   .fontFamily(bold)
@@ -102,9 +104,9 @@ class OrdersDetails extends StatelessWidget {
                   return Column(
                     children: [
                       orderPlaceDetails(
-                          title1: data['orders'][index]['title'],
-                        
-                          data1: data['orders'][index]['quantity']),
+                        title1: data['orders'][index]['title'],
+                        data1: data['orders'][index]['quantity'],
+                      ),
                       const Divider(),
                     ],
                   );

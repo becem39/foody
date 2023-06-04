@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:foody/consts/consts.dart';
+import 'package:intl/intl.dart';
 
 Widget orderPlaceDetails({title1, data1}) {
   return Padding(
@@ -10,7 +11,8 @@ Widget orderPlaceDetails({title1, data1}) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             "$title1".text.fontFamily(semibold).make(),
-            "x $data1".text.color(redColor).fontFamily(semibold).make(),
+            "  $data1".text.color(redColor).fontFamily(semibold).make(),
+      
           ],
         ),
       ],
