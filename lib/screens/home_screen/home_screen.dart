@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                       )),
                 ),
               ),
-              /*  VxSwiper.builder(
+               VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                         .clip(Clip.antiAlias)
                         .margin(const EdgeInsets.symmetric(horizontal: 0))
                         .make();
-                  }),*/
+                  }),
               10.heightBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
               ),
               10.heightBox,
               //second swi^per
-              /*  VxSwiper.builder(
+               VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                         .clip(Clip.antiAlias)
                         .margin(const EdgeInsets.symmetric(horizontal: 0))
                         .make();
-                  }),*/
+                  }),
               10.heightBox,
               Row(
                 children: List.generate(3, (index) {
