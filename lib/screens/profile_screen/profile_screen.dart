@@ -12,6 +12,7 @@ import 'package:foody/screens/profile_screen/components/detail_card.dart';
 import 'package:foody/screens/profile_screen/edit_profile_screen.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/bg_widget.dart';
+import 'package:foody/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 
 import '../wishlist_screen/wishlist_screen.dart';
@@ -22,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
+    // FirestoreServices.getCounts();
     return bgWidget(
       Scaffold(
         body: StreamBuilder(
@@ -120,7 +122,35 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     20.heightBox,
-                    SingleChildScrollView(
+
+                    FutureBuilder(
+                        future: FirestoreServices.getCounts(),
+                        builder: ((context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: loadingIndicator(),
+                            );
+                          } else {
+                            var countData = snapshot.data as List<dynamic>;
+                            //    var countData = snapshot.data;
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                detailCard(context.screenWidth / 3,
+                                    countData[0].toString(), "in your cart"),
+                                detailCard(
+                                    context.screenWidth / 3,
+                                    countData[1].toString(),
+                                    "in your wishlist"),
+                                detailCard(context.screenWidth / 3,
+                                    countData[2].toString(), "your orders"),
+                              ],
+                            );
+                          }
+                        })),
+
+                    ///////counts
+                    /*      SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,7 +163,7 @@ class ProfileScreen extends StatelessWidget {
                               data['order_count'], "your orders"),
                         ],
                       ),
-                    ),
+                    ),*/
 
                     Expanded(
                       child: ListView.separated(

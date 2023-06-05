@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/consts/lists.dart';
+import 'package:foody/screens/categories_screen.dart/item_details.dart';
 import 'package:foody/screens/home_screen/components/featured_button.dart';
+import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/home_buttons.dart';
+import 'package:foody/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/product_controller.dart';
 import '../categories_screen.dart/category_details.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,6 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put<ProductController>(ProductController());
     return Container(
       color: lightGrey,
       width: context.screenWidth,
@@ -37,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                       )),
                 ),
               ),
-              VxSwiper.builder(
+              /*  VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -53,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                         .clip(Clip.antiAlias)
                         .margin(const EdgeInsets.symmetric(horizontal: 0))
                         .make();
-                  }),
+                  }),*/
               10.heightBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +74,7 @@ class HomeScreen extends StatelessWidget {
               ),
               10.heightBox,
               //second swi^per
-              VxSwiper.builder(
+              /*  VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -84,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                         .clip(Clip.antiAlias)
                         .margin(const EdgeInsets.symmetric(horizontal: 0))
                         .make();
-                  }),
+                  }),*/
               10.heightBox,
               Row(
                 children: List.generate(3, (index) {
@@ -146,48 +152,68 @@ class HomeScreen extends StatelessWidget {
                     .make(),
               ),
               20.heightBox,
-              GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 6,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: 300,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemBuilder: ((context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          imgS4,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                        const Spacer(),
-                        "Price \$20"
-                            .text
-                            .color(redColor)
-                            .fontFamily(bold)
-                            .size(16)
-                            .make(),
-                      ],
-                    )
-                        .box
-                        .white
-                        .margin(const EdgeInsets.symmetric(horizontal: 4))
-                        .roundedSM
-                        .padding(const EdgeInsets.all(12))
-                        .make()
-                        .onTap(() {
-                      Get.to(
-                        () => CategoryDetails(
-                          title: categoriesList[index],
-                        ),
-                      );
-                    });
+              StreamBuilder(
+                  stream: FirestoreServices.allProducts(),
+                  builder: ((BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return loadingIndicator();
+                    } else {
+                      var allProductsData = snapshot.data!.docs;
+                      return GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: allProductsData.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 300,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                          ),
+                          itemBuilder: ((context, index) {
+                            return Column(
+                              key: ValueKey<String>('product_$index'),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  allProductsData[index]['p_images'][0],
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                                const Spacer(),
+                                ' ${allProductsData[index]['p_name']}'
+                                    .text
+                                    .color(redColor)
+                                    .fontFamily(bold)
+                                    .size(16)
+                                    .make(),
+                                10.heightBox,
+                                ' ${allProductsData[index]['p_price']} TND'
+                                    .text
+                                    .color(redColor)
+                                    .fontFamily(bold)
+                                    .size(16)
+                                    .make(),
+                              ],
+                            )
+                                .box
+                                .white
+                                .margin(
+                                    const EdgeInsets.symmetric(horizontal: 4))
+                                .roundedSM
+                                .padding(const EdgeInsets.all(12))
+                                .make()
+                                .onTap(() {
+                              Get.to(() => ItemDetails(
+                                    title:
+                                        "${allProductsData[index]['p_name']}",
+                                    data: allProductsData[index],
+                                  ));
+                            });
+                          }));
+                    }
                   }))
             ],
           ),
@@ -196,3 +222,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+/* 
+ 
+*/

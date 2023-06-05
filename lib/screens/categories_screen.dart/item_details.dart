@@ -13,6 +13,7 @@ class ItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ProductController>();
+    Get.find<ProductController>();
 
     return WillPopScope(
       onWillPop: () async {
@@ -58,6 +59,7 @@ class ItemDetails extends StatelessWidget {
           ],
         ),
         body: Column(
+           
           children: [
             Expanded(
                 child: Padding(
