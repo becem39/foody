@@ -34,33 +34,13 @@ const categoriesList = [
   "Sweet",
   "Savory",
   "Drinks",
-  /* desserts,
-  pizza,
-  burgers,
-  salad,
-  desserts,
-  pizza,
-  burgers,
-  salad,
-  desserts,*/
+
 ];
 const categoriesImages = [
   imgS4,
   imgS2,
   imgDrinks,
-/*  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4*/
+
 ];
 const supplements = [
   "s1",

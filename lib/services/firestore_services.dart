@@ -34,4 +34,11 @@ class FirestoreServices {
         .where('order_by', isEqualTo: currentUser!.uid)
         .snapshots();
   }
+
+  static getWishlists() {
+    return firestore
+        .collection(productsCollection)
+        .where('p_wishlist', arrayContains: currentUser!.uid)
+        .snapshots();
+  }
 }

@@ -48,6 +48,7 @@ class OrdersDetails extends StatelessWidget {
                       title1: "Order date ",
                       data1: intl.DateFormat()
                           .add_yMd()
+                          .add_jms()
                           .format((data['order_date'].toDate()))),
                   Padding(
                     padding: const EdgeInsets.symmetric(
