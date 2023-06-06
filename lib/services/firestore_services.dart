@@ -91,4 +91,9 @@ class FirestoreServices {
         .where('is_featured', isEqualTo: true)
         .snapshots();
   }
+
+  static searchProducts(title) {
+    return firestore.collection(productsCollection).get();
+    //.where('p_name', isLessThanOrEqualTo: title)
+  }
 }

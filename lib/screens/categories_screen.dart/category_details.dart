@@ -21,108 +21,103 @@ class CategoryDetails extends StatelessWidget {
       appBar: AppBar(
         title: title!.text.fontFamily(bold).white.make(),
       ),
-      body: StreamBuilder(
-        stream: FirestoreServices.getProducts(title),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return loadingIndicator();
-          } else if (snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: "No products found !".text.color(darkFontGrey).make(),
-            );
-          } else {
-            var data = snapshot.data!.docs;
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(
+                  controller.subCat.length,
+                  (index) => controller.subCat[index].text
+                      .size(12)
+                      .fontFamily(semibold)
+                      .color(darkFontGrey)
+                      .makeCentered()
+                      .box
+                      .white
+                      .rounded
+                      .size(120, 60)
+                      .margin((const EdgeInsets.symmetric(horizontal: 4)))
+                      .make()),
+            ),
+          ),
+          20.heightBox,
+          StreamBuilder(
+            stream: FirestoreServices.getProducts(title),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return loadingIndicator();
+              } else if (snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: "No products found !".text.white.make(),
+                );
+              } else {
+                var data = snapshot.data!.docs;
 
-            return Container(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: List.generate(
-                          controller.subCat.length,
-                          (index) => controller.subCat[index].text
-                              .size(12)
-                              .fontFamily(semibold)
-                              .color(darkFontGrey)
-                              .makeCentered()
+                return Expanded(
+                  child: Container(
+                    color: lightGrey,
+                    child: GridView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisExtent: 250,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.network(
+                                data[index]['p_images'][0],
+                                width: 200,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                              10.heightBox,
+                              "${data[index]['p_name']}"
+                                  .text
+                                  .color(redColor)
+                                  .fontFamily(bold)
+                                  .size(16)
+                                  .make(),
+                              10.heightBox,
+                              "${data[index]['p_price']} TND"
+                                  .text
+                                  .color(redColor)
+                                  .fontFamily(bold)
+                                  .size(16)
+                                  .make(),
+                            ],
+                          )
                               .box
                               .white
-                              .rounded
-                              .size(120, 60)
-                              .margin(
-                                  (const EdgeInsets.symmetric(horizontal: 4)))
-                              .make()),
-                    ),
+                              .margin(const EdgeInsets.symmetric(horizontal: 4))
+                              .roundedSM
+                              .outerShadowSm
+                              .padding(const EdgeInsets.all(12))
+                              .make()
+                              .onTap(() {
+                            controller.checkIfFav(data[index]);
+                            Get.to(() => ItemDetails(
+                                  title: "${data[index]['p_name']}",
+                                  data: data[index],
+                                ));
+                          });
+                        }),
                   ),
-                  20.heightBox,
-                  //items
-                  Expanded(
-                    child: Container(
-                      color: lightGrey,
-                      child: GridView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: data.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisExtent: 250,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.network(
-                                  data[index]['p_images'][0],
-                                  width: 200,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                ),
-                                10.heightBox,
-                                "${data[index]['p_name']}"
-                                    .text
-                                    .color(redColor)
-                                    .fontFamily(bold)
-                                    .size(16)
-                                    .make(),
-                                10.heightBox,
-                                "${data[index]['p_price']} TND"
-                                    .text
-                                    .color(redColor)
-                                    .fontFamily(bold)
-                                    .size(16)
-                                    .make(),
-                              ],
-                            )
-                                .box
-                                .white
-                                .margin(
-                                    const EdgeInsets.symmetric(horizontal: 4))
-                                .roundedSM
-                                .outerShadowSm
-                                .padding(const EdgeInsets.all(12))
-                                .make()
-                                .onTap(() {
-                              controller.checkIfFav(data[index]);
-                              Get.to(() => ItemDetails(
-                                    title: "${data[index]['p_name']}",
-                                    data: data[index],
-                                  ));
-                            });
-                          }),
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
-        },
+                );
+              }
+            },
+          ),
+        ],
       ),
     ));
   }

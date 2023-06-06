@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,8 @@ class HomeController extends GetxController {
 
   var currentNavIndex = 0.obs;
   var username = '';
+  var featuredList = [];
+  var searchController = TextEditingController();
   getUsername() async {
     var n = await firestore
         .collection(userCollection)

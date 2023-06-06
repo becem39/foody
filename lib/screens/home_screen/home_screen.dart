@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/consts/lists.dart';
+import 'package:foody/controllers/home_controller.dart';
 import 'package:foody/screens/categories_screen.dart/item_details.dart';
 import 'package:foody/screens/home_screen/components/featured_button.dart';
+import 'package:foody/screens/home_screen/components/search_screen.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/home_buttons.dart';
 import 'package:foody/widgets/loading_indicator.dart';
@@ -17,6 +20,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
     Get.put<ProductController>(ProductController());
     return Container(
       color: lightGrey,
@@ -30,20 +34,29 @@ class HomeScreen extends StatelessWidget {
             children: [
               Container(
                 alignment: Alignment.center,
-                height: 60,
+                // height: 60,
                 color: lightGrey,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.search),
+                  controller: controller.searchController,
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.search).onTap(() {
+                        if (controller
+                            .searchController.text.isNotEmptyAndNotNull) {
+                          Get.to(() => SearchScreen(
+                                title: controller.searchController.text,
+                              ));
+                        }
+                      }),
                       filled: true,
                       fillColor: whiteColor,
                       hintText: searchAnything,
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: textfieldGrey,
                       )),
                 ),
               ),
-               VxSwiper.builder(
+              20.heightBox,
+              VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -61,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         .make();
                   }),
               10.heightBox,
-              Row(
+              /*  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(2, (index) {
                   return homeButton(
@@ -71,10 +84,10 @@ class HomeScreen extends StatelessWidget {
                     index == 0 ? todayDeal : flashSale,
                   );
                 }),
-              ),
+              ),*/
               10.heightBox,
               //second swi^per
-               VxSwiper.builder(
+              /*      VxSwiper.builder(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
                   height: 200,
@@ -90,8 +103,9 @@ class HomeScreen extends StatelessWidget {
                         .clip(Clip.antiAlias)
                         .margin(const EdgeInsets.symmetric(horizontal: 0))
                         .make();
-                  }),
+                  }),*/
               10.heightBox,
+
               Row(
                 children: List.generate(3, (index) {
                   return Expanded(
@@ -140,7 +154,86 @@ class HomeScreen extends StatelessWidget {
                   ).toList(),
                 ),
               ),
-
+/////////featured products
+              Container(
+                color: redColor,
+                padding: const EdgeInsets.all(12),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    "Featured products"
+                        .text
+                        .color(darkFontGrey)
+                        .fontFamily(bold)
+                        .size(18)
+                        .make(),
+                    10.heightBox,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: StreamBuilder(
+                          stream: FirestoreServices.getFeaturedProducts(),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return loadingIndicator();
+                            } else if (snapshot.data!.docs.isEmpty) {
+                              return "No featured products".text.makeCentered();
+                            } else {
+                              var featuredData = snapshot.data!.docs;
+                              return Row(
+                                children: List.generate(
+                                  featuredData.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Image.network(
+                                          featuredData[index]['p_images'][0],
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        10.heightBox,
+                                        "${featuredData[index]['p_name']}"
+                                            .text
+                                            .fontFamily(bold)
+                                            .color(darkFontGrey)
+                                            .make(),
+                                        10.heightBox,
+                                        "${featuredData[index]['p_price']} TND"
+                                            .text
+                                            .fontFamily(semibold)
+                                            .color(darkFontGrey)
+                                            .make(),
+                                        10.heightBox,
+                                      ],
+                                    )
+                                        .box
+                                        .white
+                                        .margin(const EdgeInsets.symmetric(
+                                            horizontal: 4))
+                                        .roundedSM
+                                        .padding(const EdgeInsets.all(8))
+                                        .make()
+                                        .onTap(() {
+                                      Get.to(() => ItemDetails(
+                                            title:
+                                                "${featuredData[index]['p_name']}",
+                                            data: featuredData[index],
+                                          ));
+                                    }),
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ],
+                ),
+              ),
               20.heightBox,
               //all products
               Align(

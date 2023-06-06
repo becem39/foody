@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
+import 'package:foody/screens/categories_screen.dart/category_details.dart';
+import 'package:get/get.dart';
 
 Widget featuredButton(String? title, icon) {
   return Row(
@@ -21,5 +23,12 @@ Widget featuredButton(String? title, icon) {
       .padding(const EdgeInsets.all(4))
       .roundedSM
       .outerShadowSm
-      .make();
+      .make()
+      .onTap(() {
+    Get.to(
+      () => CategoryDetails(
+        title: title,
+      ),
+    );
+  });
 }
