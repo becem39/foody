@@ -110,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                                   side: const BorderSide(color: whiteColor)),
                               onPressed: () async {
                                 await Get.put(AuthController())
-                                    .SignOutMethod(context);
+                                    .signOutMethod(context);
                                 Get.offAll(() => const LoginScreen());
                               },
                               child: "Logout"

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/consts/lists.dart';
 import 'package:foody/controllers/home_controller.dart';
@@ -8,12 +7,10 @@ import 'package:foody/screens/categories_screen.dart/item_details.dart';
 import 'package:foody/screens/home_screen/components/featured_button.dart';
 import 'package:foody/screens/home_screen/components/search_screen.dart';
 import 'package:foody/services/firestore_services.dart';
-import 'package:foody/widgets/home_buttons.dart';
 import 'package:foody/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/product_controller.dart';
-import '../categories_screen.dart/category_details.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

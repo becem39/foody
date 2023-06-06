@@ -1,10 +1,8 @@
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/widgets/app_button.dart';
-import 'package:get/get.dart';
 
 Widget exitDialog(context) {
   return Dialog(

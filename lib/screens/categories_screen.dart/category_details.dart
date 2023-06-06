@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/controllers/product_controller.dart';
 import 'package:foody/screens/categories_screen.dart/item_details.dart';

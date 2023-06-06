@@ -57,7 +57,7 @@ class AuthController extends GetxController {
 
   //signout
 
-  SignOutMethod(context) async {
+  signOutMethod(context) async {
     try {
       await auth.signOut();
     } catch (e) {

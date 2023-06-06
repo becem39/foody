@@ -6,7 +6,6 @@ import 'package:foody/widgets/app_button.dart';
 import 'package:foody/widgets/custom_textfield.dart';
 import 'package:get/get.dart';
 
-import '../../services/firestore_services.dart';
 
 class ShippingDetails extends StatelessWidget {
   const ShippingDetails({super.key});

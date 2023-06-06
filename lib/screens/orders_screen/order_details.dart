@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/screens/orders_screen/components/order_place_details.dart';
 import 'package:foody/screens/orders_screen/order_status.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart' as intl;
 
 class OrdersDetails extends StatelessWidget {

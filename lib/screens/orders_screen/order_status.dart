@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:foody/consts/colors.dart';
 import 'package:foody/consts/consts.dart';
 
 Widget orderStatus({

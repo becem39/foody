@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
-import 'package:foody/controllers/product_controller.dart';
 import 'package:foody/screens/categories_screen.dart/item_details.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../widgets/loading_indicator.dart';
 
@@ -15,7 +13,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ProductController());
+    //var controller = Get.put(ProductController());
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(

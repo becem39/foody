@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:foody/consts/consts.dart';
-import 'package:intl/intl.dart';
 
 Widget orderPlaceDetails({title1, data1}) {
   return Padding(
