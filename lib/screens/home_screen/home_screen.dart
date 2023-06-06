@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                   }),*/
               10.heightBox,
 
-              Row(
+              /*  Row(
                 children: List.generate(3, (index) {
                   return Expanded(
                     child: homeButton(
@@ -125,8 +125,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 }),
-              ),
-              20.heightBox,
+              ),*/
+              //   20.heightBox,
               //featured taw
               Align(
                 alignment: Alignment.centerLeft,
@@ -154,9 +154,28 @@ class HomeScreen extends StatelessWidget {
                   ).toList(),
                 ),
               ),
+              20.heightBox,
+              VxSwiper.builder(
+                  aspectRatio: 16 / 9,
+                  autoPlay: true,
+                  height: 200,
+                  enlargeCenterPage: true,
+                  itemCount: secondSliderList.length,
+                  itemBuilder: (context, index) {
+                    return Image.asset(
+                      secondSliderList[index],
+                      fit: BoxFit.fill,
+                    )
+                        .box
+                        .rounded
+                        .clip(Clip.antiAlias)
+                        .margin(const EdgeInsets.symmetric(horizontal: 0))
+                        .make();
+                  }),
+              20.heightBox,
 /////////featured products
               Container(
-                color: redColor,
+                color: whiteColor,
                 padding: const EdgeInsets.all(12),
                 width: double.infinity,
                 child: Column(

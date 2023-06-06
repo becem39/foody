@@ -10,16 +10,37 @@ import 'package:get/get.dart';
 
 import '../../widgets/loading_indicator.dart';
 
-class CategoryDetails extends StatelessWidget {
+class CategoryDetails extends StatefulWidget {
   final String? title;
   const CategoryDetails({super.key, this.title});
 
   @override
+  State<CategoryDetails> createState() => _CategoryDetailsState();
+}
+
+class _CategoryDetailsState extends State<CategoryDetails> {
+  @override
+  void initState() {
+    super.initState();
+    switchCategory(widget.title);
+  }
+
+  switchCategory(title) {
+    if (controller.subCat.contains(title)) {
+      productMethod = FirestoreServices.getSubCategoryProducts(title);
+    } else {
+      productMethod = FirestoreServices.getProducts(title);
+    }
+  }
+
+  var controller = Get.find<ProductController>();
+
+  dynamic productMethod;
+  @override
   Widget build(BuildContext context) {
-    var controller = Get.find<ProductController>();
     return bgWidget(Scaffold(
       appBar: AppBar(
-        title: title!.text.fontFamily(bold).white.make(),
+        title: widget.title!.text.fontFamily(bold).white.make(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,30 +50,38 @@ class CategoryDetails extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: List.generate(
-                  controller.subCat.length,
-                  (index) => controller.subCat[index].text
-                      .size(12)
-                      .fontFamily(semibold)
-                      .color(darkFontGrey)
-                      .makeCentered()
-                      .box
-                      .white
-                      .rounded
-                      .size(120, 60)
-                      .margin((const EdgeInsets.symmetric(horizontal: 4)))
-                      .make()),
+                controller.subCat.length,
+                (index) => controller.subCat[index].text
+                    .size(12)
+                    .fontFamily(semibold)
+                    .color(darkFontGrey)
+                    .makeCentered()
+                    .box
+                    .white
+                    .rounded
+                    .size(120, 60)
+                    .margin((const EdgeInsets.symmetric(horizontal: 4)))
+                    .make()
+                    .onTap(() {
+                  switchCategory(controller.subCat[index]);
+                  setState(() {});
+                }),
+              ),
             ),
           ),
           20.heightBox,
           StreamBuilder(
-            stream: FirestoreServices.getProducts(title),
+            stream: productMethod,
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
-                return loadingIndicator();
+                return Expanded(child: Center(child: loadingIndicator()));
               } else if (snapshot.data!.docs.isEmpty) {
-                return Center(
-                  child: "No products found !".text.white.make(),
+                return Expanded(
+                  child: "No products found !"
+                      .text
+                      .color(darkFontGrey)
+                      .makeCentered(),
                 );
               } else {
                 var data = snapshot.data!.docs;
