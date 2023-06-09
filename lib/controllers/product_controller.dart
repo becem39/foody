@@ -44,7 +44,20 @@ class ProductController extends GetxController {
       'img': img,
       'quantity': quantity,
       'price': price,
-     // 'total_price': totalPrice,
+      // 'total_price': totalPrice,
+      'added_by': currentUser!.uid,
+    }).catchError((error) {
+      VxToast.show(context, msg: error.toString());
+    });
+  }
+
+  waddToCart({title, img, quantity, price, context, table_num}) async {
+    await firestore.collection(cartCollection).doc().set({
+      'title': title,
+      'img': img,
+      'quantity': quantity,
+      'price': price,
+      'table_num': table_num,
       'added_by': currentUser!.uid,
     }).catchError((error) {
       VxToast.show(context, msg: error.toString());
