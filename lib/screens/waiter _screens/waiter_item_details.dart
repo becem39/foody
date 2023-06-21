@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/controllers/product_controller.dart';
 import 'package:foody/widgets/app_button.dart';
 import 'package:get/get.dart';
 
-class ItemDetails extends StatelessWidget {
+class WaiterItemDetails extends StatelessWidget {
   final String? title;
   final dynamic data;
 
-  const ItemDetails({super.key, required this.title, required this.data});
+  const WaiterItemDetails({super.key, required this.title, required this.data});
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ProductController>();
     Get.find<ProductController>();
+    var tablenum = TextEditingController();
 
     return WillPopScope(
       onWillPop: () async {
@@ -59,7 +61,6 @@ class ItemDetails extends StatelessWidget {
           ],
         ),
         body: Column(
-           
           children: [
             Expanded(
                 child: Padding(
@@ -108,22 +109,6 @@ class ItemDetails extends StatelessWidget {
                     10.heightBox,
                     Column(
                       children: [
-                        /* Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: "Supplements"
-                                  .text
-                                  .color(redColor)
-                                  .fontFamily(bold)
-                                  .size(14)
-                                  .make(),
-                            ),
-                            10.heightBox,
-                            const Spacer(),
-                            //supplements here
-                          ],
-                        ),*/
                         Row(
                           children: [
                             SizedBox(
@@ -188,8 +173,26 @@ class ItemDetails extends StatelessWidget {
                                 ],
                               ).box.padding(const EdgeInsets.all(8)).make(),
                             ),
+                            10.heightBox,
+                
                           ],
                         ).box.white.shadowSm.make(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            "Table number: ".text.color(darkFontGrey).make(),
+                            Expanded(
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9]')),
+                                ],
+                                controller: tablenum,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     )
                   ],
@@ -202,12 +205,13 @@ class ItemDetails extends StatelessWidget {
               height: 60,
               child: appButton(() {
                 if (controller.quantity.value > 0) {
-                  controller.addToCart(
+                  controller.waddToCart(
                     context: context,
                     quantity: controller.quantity.value,
                     img: data['p_images'][0],
                     title: data['p_name'],
                     price: controller.totalPrice.value,
+                    table_num: tablenum.text,
                   );
                   VxToast.show(context, msg: "Added to cart");
                 } else {

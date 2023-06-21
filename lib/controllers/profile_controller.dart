@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 class ProfileController extends GetxController {

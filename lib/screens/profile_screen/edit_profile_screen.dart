@@ -87,8 +87,10 @@ class EditProfileScreen extends StatelessWidget {
                           password: controller.newPasswordController.text,
                           imgUrl: controller.profileImageLink,
                         );
+                        // ignore: use_build_context_synchronously
                         VxToast.show(context, msg: "updated");
                       } else {
+                        // ignore: use_build_context_synchronously
                         VxToast.show(context, msg: "Wrong old password");
                         controller.isLoading(false);
                       }

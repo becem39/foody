@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/controllers/cart_controller.dart';
 import 'package:foody/screens/cart_screen/shipping_screen.dart';
+import 'package:foody/screens/waiter%20_screens/waiter_home.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/app_button.dart';
 import 'package:foody/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class WaiterCartScreen extends StatelessWidget {
+  const WaiterCartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,11 @@ class CartScreen extends StatelessWidget {
         backgroundColor: whiteColor,
         bottomNavigationBar: SizedBox(
           height: 60,
-          child: appButton(() {
-            Get.to(() => const ShippingDetails());
+          child: appButton(()async {
+             await controller.placeMyOrder(controller.totalPrice);
+            await controller.clearCart();
+
+            Get.offAll(const WaiterHome());
           }, redColor, whiteColor, "Confirm order"),
         ),
         appBar: AppBar(
@@ -63,7 +67,7 @@ class CartScreen extends StatelessWidget {
                                       .fontFamily(semibold)
                                       .size(16)
                                       .make(),
-                              subtitle: '${data[index]['price']} TND'
+                              subtitle: '${data[index]['price']} TND           table    ${data[index]['table_num']}  '
                                   .text
                                   .color(redColor)
                                   .fontFamily(semibold)

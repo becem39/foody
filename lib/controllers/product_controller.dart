@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:foody/models/category_model.dart';
@@ -45,6 +44,20 @@ class ProductController extends GetxController {
       'img': img,
       'quantity': quantity,
       'price': price,
+      // 'total_price': totalPrice,
+      'added_by': currentUser!.uid,
+    }).catchError((error) {
+      VxToast.show(context, msg: error.toString());
+    });
+  }
+
+  waddToCart({title, img, quantity, price, context, table_num}) async {
+    await firestore.collection(cartCollection).doc().set({
+      'title': title,
+      'img': img,
+      'quantity': quantity,
+      'price': price,
+      'table_num': table_num,
       'added_by': currentUser!.uid,
     }).catchError((error) {
       VxToast.show(context, msg: error.toString());
@@ -57,15 +70,15 @@ class ProductController extends GetxController {
     isFav.value = false;
   }
 
-  addToWishlist(docId,context) async {
+  addToWishlist(docId, context) async {
     await firestore.collection(productsCollection).doc(docId).set({
       'p_wishlist': FieldValue.arrayUnion([currentUser!.uid])
     }, SetOptions(merge: true));
     isFav(true);
-     VxToast.show(context, msg: 'Added to wishlist');
+    VxToast.show(context, msg: 'Added to wishlist');
   }
 
-  removeFromWishlist(docId,context) async {
+  removeFromWishlist(docId, context) async {
     await firestore.collection(productsCollection).doc(docId).set({
       'p_wishlist': FieldValue.arrayRemove([currentUser!.uid])
     }, SetOptions(merge: true));

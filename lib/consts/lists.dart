@@ -17,50 +17,28 @@ const secondSliderList = [
   imgSs3,
   imgSs4,
 ];
-const featuredImages1 = [imgS1, imgS2];
+const featuredImages1 = [imgS1, imgS4];
 
 const featuredTitles = [
-  pizza,
-  burgers,
+  "Savory",
+  "Sweet",
 ];
-const featuredImages2 = [imgS3, imgS4];
+const featuredImages2 = [imgDrinks, imgS4];
 
 const featuredTitles2 = [
-  salad,
-  desserts,
+  "Drinks",
+  "special offers",
 ];
 
 const categoriesList = [
   "Sweet",
   "Savory",
   "Drinks",
-  /* desserts,
-  pizza,
-  burgers,
-  salad,
-  desserts,
-  pizza,
-  burgers,
-  salad,
-  desserts,*/
 ];
 const categoriesImages = [
   imgS4,
   imgS2,
   imgDrinks,
-/*  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4,
-  imgS1,
-  imgS2,
-  imgS3,
-  imgS4*/
 ];
 const supplements = [
   "s1",

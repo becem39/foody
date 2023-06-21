@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:foody/consts/consts.dart';
 import 'package:get/get.dart';
 
+import '../screens/home_screen/home.dart';
+import '../screens/waiter _screens/waiter_home.dart';
+
 class AuthController extends GetxController {
   var isLoading = false.obs;
 
@@ -19,12 +22,61 @@ class AuthController extends GetxController {
     try {
       userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+      final String uid = userCredential.user!.uid;
+
+      final userData =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      final String role = userData['role'];
+
+      if (role == 'client') {
+        Get.offAll(() => const Home());
+      } else if (role == 'waiter') {
+        Get.offAll(() => const WaiterHome());
+      }
     } on FirebaseAuthException catch (e) {
       VxToast.show(context, msg: e.toString());
     }
     return userCredential;
   }
 
+/*
+ Future<void> loginMethod({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final String uid = userCredential.user!.uid;
+
+      // Get the user data from Firestore
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
+
+      final String role = userData['role'];
+
+      // Check the role and redirect the user accordingly
+      if (role == 'client') {
+        // Redirect to client home page
+        Get.offAll(() => const Home());
+      } else if (role == 'staff') {
+        // Redirect to staff home page
+        Get.offAll(() => const WaiterHome());
+      }
+    } catch (e) {
+      print('Error logging in: $e');
+      // Handle login error
+    }
+  }
+
+*/
   //signup !
   Future<UserCredential?> signupMethod({email, password, context}) async {
     UserCredential? userCredential;
@@ -49,7 +101,7 @@ class AuthController extends GetxController {
       'imageUrl': '',
       'role': 'client',
       'id': currentUser!.uid,
-      'cart_count':'00',
+      'cart_count': '00',
       'wishlist_count': '00',
       'order_count': '00',
     });
@@ -57,7 +109,7 @@ class AuthController extends GetxController {
 
   //signout
 
-  SignOutMethod(context) async {
+  signOutMethod(context) async {
     try {
       await auth.signOut();
     } catch (e) {

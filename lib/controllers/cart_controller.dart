@@ -8,6 +8,7 @@ class CartController extends GetxController {
   var totalPrice = 0.0;
   late dynamic productSnapshot;
   var products = [];
+
 //text controllers for shipping
   var addressController = TextEditingController();
   var cityController = TextEditingController();
@@ -24,7 +25,7 @@ class CartController extends GetxController {
   placeMyOrder(totalAmount) async {
     await getProductDetails();
     await firestore.collection(ordersCollection).doc().set({
-      'order_code':'222222',
+      'order_code': '222222',
       'order_by': currentUser!.uid,
       'order_by_name': Get.find<HomeController>().username,
       'order_by_email': currentUser!.email,
@@ -35,8 +36,9 @@ class CartController extends GetxController {
       "shipping_method": "Delivery",
       'order_placed': true,
       'total_amount': totalAmount,
-      'order_confirmed':false,
-      'order_delivered':false,
+      'order_confirmed': false,
+      'order_delivered': false,
+      'order_date': Timestamp.now(),
       'orders': FieldValue.arrayUnion(products),
     });
   }
@@ -49,7 +51,15 @@ class CartController extends GetxController {
         'img': productSnapshot[j]['img'],
         'quantity': productSnapshot[j]['quantity'],
         'title': productSnapshot[j]['title'],
+        //  'total_price': productSnapshot[j]['total_price'],
       });
+    }
+  }
+
+  ////////////////////////////
+  clearCart() {
+    for (var j = 0; j < productSnapshot.length; j++) {
+      firestore.collection(cartCollection).doc(productSnapshot[j].id).delete();
     }
   }
 }

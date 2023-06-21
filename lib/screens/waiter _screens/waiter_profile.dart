@@ -10,6 +10,7 @@ import 'package:foody/screens/auth/login_screen.dart';
 import 'package:foody/screens/orders_screen/orders_screen.dart';
 import 'package:foody/screens/profile_screen/components/detail_card.dart';
 import 'package:foody/screens/profile_screen/edit_profile_screen.dart';
+import 'package:foody/screens/waiter%20_screens/waiter_order.dart';
 import 'package:foody/services/firestore_services.dart';
 import 'package:foody/widgets/bg_widget.dart';
 import 'package:foody/widgets/loading_indicator.dart';
@@ -17,13 +18,13 @@ import 'package:get/get.dart';
 
 import '../wishlist_screen/wishlist_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class WaiterProfileScreen extends StatelessWidget {
+  const WaiterProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
-    // FirestoreServices.getCounts();
+
     return bgWidget(
       Scaffold(
         body: StreamBuilder(
@@ -132,38 +133,18 @@ class ProfileScreen extends StatelessWidget {
                             );
                           } else {
                             var countData = snapshot.data as List<dynamic>;
-                            //    var countData = snapshot.data;
+
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 detailCard(context.screenWidth / 3,
                                     countData[0].toString(), "in your cart"),
-                                detailCard(
-                                    context.screenWidth / 3,
-                                    countData[1].toString(),
-                                    "in your wishlist"),
                                 detailCard(context.screenWidth / 3,
                                     countData[2].toString(), "your orders"),
                               ],
                             );
                           }
                         })),
-
-                    ///////counts
-                    /*      SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          detailCard(context.screenWidth / 3,
-                              data['cart_count'], "in your cart"),
-                          detailCard(context.screenWidth / 3,
-                              data['wishlist_count'], "in your wishlist"),
-                          detailCard(context.screenWidth / 3,
-                              data['order_count'], "your orders"),
-                        ],
-                      ),
-                    ),*/
 
                     Expanded(
                       child: ListView.separated(
@@ -181,10 +162,10 @@ class ProfileScreen extends StatelessWidget {
                                   onTap: () {
                                     switch (index) {
                                       case 0:
-                                        Get.to(() => const OrdersScreen());
+                                        Get.to(
+                                            () => const WaiterOrdersScreen());
                                         break;
                                       case 1:
-                                        Get.to(() => const WishlistScreen());
                                         break;
                                     }
                                   },

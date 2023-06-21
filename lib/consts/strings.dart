@@ -1,4 +1,4 @@
-const appname = "foody";
+const appname = "MealMaven";
 const appversion = "Version 1.0.0";
 const credits = "@becem";
 const email = "Email";
